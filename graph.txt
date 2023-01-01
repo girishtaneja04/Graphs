@@ -1,0 +1,103 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+class comparator
+{
+public:
+    bool operator ()(pair<int, int>& p1, pair<int, int>& p2)
+    {
+        return p1.second > p2.second;
+    }
+};
+
+int prim(unordered_map<int, vector<pair<int, int>>>& unmp)
+{
+#if 0    
+    for(auto itr=unmp.begin(); itr != unmp.end(); itr++)
+    {
+        cout<<itr->first<<" is connected to "<<endl;
+        for(auto itt : itr->second)
+        {
+            cout<<itt.first<<" and length is "<<itt.second<<endl;
+        }
+        cout<<endl;
+    }
+#endif
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, comparator> pq;
+    bool visited[5];
+    memset(visited, false, sizeof(visited));
+
+    pq.push(make_pair(0, 0));
+    int dist = 0;
+
+    while(pq.size() > 0)
+    {
+        auto it = pq.top();
+        pq.pop();
+        
+        if(!visited[it.first])
+            dist += it.second;
+        
+        visited[it.first] = true;
+        for(auto itt : unmp[it.first])
+        {
+            if(!visited[itt.first])
+                pq.push(itt);
+
+            //else
+            //{
+                //cout<<itt.first<<" is visited so not pushing"<<endl;
+            //}
+        }    
+    }
+
+    cout<<dist<<endl;
+}
+
+#if 0
+
+int graph[V][V] =     { { 0, 2, 0, 6, 0 },
+                        { 2, 0, 3, 8, 5 },
+                        { 0, 3, 0, 0, 7 },
+                        { 6, 8, 0, 0, 9 },
+                        { 0, 5, 7, 9, 0 } };
+
+#endif
+
+int main()
+{
+    cout<<"jfaasfasjkas"<<endl;
+
+    unordered_map<int, vector<pair<int, int>> > unmp;
+
+    unmp[0].push_back(make_pair(1, 2));
+    unmp[0].push_back(make_pair(3, 6));
+
+    unmp[1].push_back(make_pair(0, 2));
+    unmp[1].push_back(make_pair(2, 3));
+    unmp[1].push_back(make_pair(3, 8));
+    unmp[1].push_back(make_pair(4, 5));
+
+    unmp[2].push_back(make_pair(1, 3));
+    unmp[2].push_back(make_pair(4, 7));
+
+    unmp[3].push_back(make_pair(0, 6));
+    unmp[3].push_back(make_pair(1, 8));
+    unmp[3].push_back(make_pair(4, 9));
+
+    unmp[4].push_back(make_pair(1, 5));
+    unmp[4].push_back(make_pair(2, 7));
+    unmp[4].push_back(make_pair(3, 9));
+
+    prim(unmp);
+
+
+
+    return 0;
+}
